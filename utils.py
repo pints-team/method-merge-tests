@@ -28,7 +28,7 @@ def ecdf_norm_plotter(draws, normal_sd, x=np.linspace(-5, 5, 100)):
     ecdf_fun = ECDF(draws)
     ecdf = [ecdf_fun(y) for y in x]
     cdf = [norm.cdf(y, 0, normal_sd) for y in x]
-    
+
     x1 = np.linspace(0, 1, 100)
     y = [y for y in x1]
     plt.scatter(ecdf, cdf)
@@ -36,3 +36,19 @@ def ecdf_norm_plotter(draws, normal_sd, x=np.linspace(-5, 5, 100)):
     plt.xlabel('Estimated cdf')
     plt.ylabel('True cdf')
     plt.show()
+
+
+def run_replicates_annulus(iterations, n_replicates, test):
+    df = pd.DataFrame(columns=['iterations', 'replicate', 'distance', 'ess'],
+                      index=np.arange(len(iterations) * n_replicates))
+    k = 0
+    for it in iterations:
+        for rep in range(n_replicates):
+            result = test(it)
+            df.iloc[k] = {'iterations': it, 'replicate': rep, 'distance':
+                          result['distance'], 'ess': result['mean-ess']}
+            k += 1
+    df['iterations'] = pd.to_numeric(df['iterations'])
+    df['distance'] = pd.to_numeric(df['distance'])
+    df['ess'] = pd.to_numeric(df['ess'])
+    return df
