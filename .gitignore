@@ -31,3 +31,6 @@ venv*
 # Build artifacts
 build/*
 dist/*
+
+# Temporary simulation results directory
+performance_data/*
