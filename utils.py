@@ -7,23 +7,7 @@ import pandas as pd
 import pints
 
 
-def run_replicates(iterations, n_replicates, test):
-    df = pd.DataFrame(columns=['iterations', 'replicate', 'kld', 'ess'],
-                      index=np.arange(len(iterations) * n_replicates))
-    k = 0
-    for it in iterations:
-        for rep in range(n_replicates):
-            result = test(it)
-            df.iloc[k] = {'iterations': it, 'replicate': rep,
-                          'kld': result['kld'], 'ess': result['mean-ess']}
-            k += 1
-    df['iterations'] = pd.to_numeric(df['iterations'])
-    df['kld'] = pd.to_numeric(df['kld'])
-    df['ess'] = pd.to_numeric(df['ess'])
-    return df
-
-
-def run_replicates2(iterations, n_replicates, test, parallel=False):
+def run_replicates(iterations, n_replicates, test, parallel=False):
     """
     Runs ``test(i)`` for all entries ``i`` in ``iterations``, repeating each
     test ``n_replicates`` times.
@@ -70,35 +54,3 @@ def ecdf_norm_plotter(draws, normal_sd, x=np.linspace(-5, 5, 100)):
     plt.ylabel('True cdf')
     plt.show()
 
-
-def run_replicates_distance(iterations, n_replicates, test):
-    df = pd.DataFrame(columns=['iterations', 'replicate', 'distance', 'ess'],
-                      index=np.arange(len(iterations) * n_replicates))
-    k = 0
-    for it in iterations:
-        for rep in range(n_replicates):
-            result = test(it)
-            df.iloc[k] = {'iterations': it, 'replicate': rep,
-                          'distance': result['distance'],
-                          'ess': result['mean-ess']}
-            k += 1
-    df['iterations'] = pd.to_numeric(df['iterations'])
-    df['distance'] = pd.to_numeric(df['distance'])
-    df['ess'] = pd.to_numeric(df['ess'])
-    return df
-
-
-def run_replicates_annulus(iterations, n_replicates, test):
-    df = pd.DataFrame(columns=['iterations', 'replicate', 'distance', 'ess'],
-                      index=np.arange(len(iterations) * n_replicates))
-    k = 0
-    for it in iterations:
-        for rep in range(n_replicates):
-            result = test(it)
-            df.iloc[k] = {'iterations': it, 'replicate': rep, 'distance':
-                          result['distance'], 'ess': result['mean-ess']}
-            k += 1
-    df['iterations'] = pd.to_numeric(df['iterations'])
-    df['distance'] = pd.to_numeric(df['distance'])
-    df['ess'] = pd.to_numeric(df['ess'])
-    return df
