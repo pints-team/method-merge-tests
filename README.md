@@ -13,3 +13,6 @@ Create a virtual environment with `python3 -m venv venv`, activate it with `sour
 It also requires a local installation of [PINTS](https://github.com/pints-team/pints).
 Since this repository is designated to test methods _before_ they are merged, these methods should be in a branch.
 Therefore it is not included in the `requirements.txt` but one should checkout the corresponding branch when running the tests.
+
+For now, the functions for these tests sit on [a branch in PINTS](https://github.com/pints-team/pints/tree/issue-1294-functional-testing-module) which needs to be checked out manually (and locally).
+We don't have to do this when it's merged into master later.
