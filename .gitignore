@@ -34,3 +34,6 @@ dist/*
 
 # Temporary simulation results directory
 performance_data/*
+
+# Local PINTS installation
+pints/
