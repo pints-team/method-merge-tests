@@ -29,7 +29,17 @@ def run_replicates(iterations, n_replicates, test, parallel=False):
     df['iterations'] = np.repeat(iterations, n_replicates)
     df['replicate'] = np.tile(np.arange(n_replicates), len(iterations))
 
-    results = pints.evaluate(test, list(df['iterations']), parallel=parallel)
+    # Evaluate the cases in reverse order:
+    # - Assuming that the iterations are sorted from low to high, the longest
+    #   running tasks are at the end.
+    # - If we start with short tasks and end with long ones, the last process
+    #   to start will be the last one to finish.
+    # - Instead, do the long running tasks first, and then whoever finishes
+    #   first can start on the shorter tasks.
+    iterations = list(reversed(df['iterations']))
+    results = pints.evaluate(test, iterations, parallel=parallel)
+    results.reverse()
+
     assert len(results) > 0, 'Empty result set generated'
     for key in results[0].keys():
         df[key] = np.array([r[key] for r in results], copy=False)
